@@ -1,0 +1,20 @@
+language: python
+cache: pip
+python:
+- '2.7'
+- '3.3'
+- '3.4'
+- '3.5'
+install: pip install . codecov mock nose pylint
+script:
+- nosetests --with-coverage
+- pylint influxalchemy
+after_success: codecov
+deploy:
+  provider: pypi
+  user: amancevice
+  password:
+    secure: KcT5EOQSnhmfs49RSA7Lfa+2O4IsZcuYyMQBVUDxz2eQIXHKP6WWTmAjVwFYhnlnBUoTRINieAhCElQraTdm55AAy9z4GwN+aXBLvnvnVZseLwCz6p25snYR9W47RykaLmvgbBvy20pvKBAWGvT/9KfD2L4tL5vQrVluuLbwBwCqK89KAPBc9wmaAeIQfAWb7ZlOAb3ts+k9FfUfpqjxUo5b1wWPOAvCcfmu/5qYNcEuowzqImQPzAX5sRZgXnp2/W9SRSMjt/DpxfG2DdGgYo0Vpm2WfZ4lvi9RzqD4mU6PtaO/R0DexquN1HxcfEUmVxvgpVqCPMlwf//H0GEXk8FfxK8b/bKIiBCzW3CP6chceK+3gvggCZKpQWHa8/1oeq0kk8UpVMWFutCaj7/T3rPE6F9earrPkMkPnX/pXRljz5E90mBryblYPW6cj4u32OeH1GpOjUU1eJHMsgtQ9L0XsqC5kQ4wzspxjdUR4TLdilxD1YLNIQkHnnXtb1d5CdMTLPiTPoM1LYpnF/IDYGFqzDdC4SNpdocMjWW0rWsJ5p+4FGswBOi9HKpLbBC8Vy8NIyV5fUji+N3+CJ38B8budcltXql6yjld4v6yLDEMu7fVwEsjI+vDo0+VAkX9jEU7oYxgCgkwySjUXPWwdcwXikqX/PAI/rjWVlMbb/I=
+  on:
+    tags: true
+    repo: amancevice/influxalchemy
