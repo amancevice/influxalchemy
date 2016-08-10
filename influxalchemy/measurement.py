@@ -4,39 +4,49 @@ from . import operations
 
 
 class MetaMeasurement(type):
-    def __getattr__(self, name):
+    """ Meta class of Measurement. """
+    def __getattr__(cls, name):
         if name == "time":
-            return Time(name, self)
+            return Time(name, cls)
         else:
-            return Tag(name, self)
+            return Tag(name, cls)
 
-    def __str__(self):
+    def __str__(cls):
         try:
-            return self.__measurement__
+            return cls.__measurement__
         except AttributeError:
-            return self.__name__
+            return cls.__name__
 
-    def __or__(self, other):
-        left = str(self).strip("/")
+    def __or__(cls, other):
+        left = str(cls).strip("/")
         name = "_".join(left.split("|") + [str(other)])
         bases = Measurement,
-        measurement = "/%s|%s/" % (str(self).strip("/"), other)
+        measurement = "/%s|%s/" % (str(cls).strip("/"), other)
         return type(name, bases, {"__measurement__": measurement})
 
     @property
-    def measurement(self):
-        return self
+    def measurement(cls):
+        """ Reflexive reference to measurement. """
+        return cls
 
 
+# pylint: disable=too-few-public-methods
 class Measurement(object):
+    """ InfluxDB Measurement. """
     __metaclass__ = MetaMeasurement
 
     @classmethod
     def new(cls, name):
+        """ Generate new Measurement class. """
         return type(name, (cls,), {"__measurement__": name})
 
 
 class Tag(object):
+    """ InfluxDB Tag instance.
+
+        name        (str):          Name of Tag
+        measurement (Measurement):  Measurement of tag
+    """
     def __init__(self, name, measurement):
         self._name = name
         self.measurement = measurement
@@ -48,44 +58,59 @@ class Tag(object):
         return self._name
 
     def __eq__(self, other):
-        return TagExp.eq(self, other)
+        return TagExp.equals(self, other)
 
     def __ne__(self, other):
-        return TagExp.ne(self, other)
+        return TagExp.notequals(self, other)
 
     def __gt__(self, other):
-        return TagExp.gt(self, other)
+        return TagExp.greater_than(self, other)
 
     def __lt__(self, other):
-        return TagExp.lt(self, other)
+        return TagExp.less_than(self, other)
 
     def __ge__(self, other):
-        return TagExp.ge(self, other)
+        return TagExp.greater_equal(self, other)
 
     def __le__(self, other):
-        return TagExp.le(self, other)
+        return TagExp.less_equal(self, other)
 
     def like(self, other):
-        return TagExp.lk(self, other)
+        """ self =~ other """
+        return TagExp.like(self, other)
 
     def notlike(self, other):
-        return TagExp.nk(self, other)
+        """ self !~ other """
+        return TagExp.notlike(self, other)
 
 
 class Time(Tag):
+    """ Time of InfluxDB Measurement. """
     def between(self, start, end, startinc=True, endinc=True):
+        """ Query times between extremes.
+
+            Arguments:
+                start    (str):      Start of time
+                end      (str):      End of time
+                startinc (boolean):  Start-inclusive flag
+                endinc   (boolean):  End-inclusive flag
+
+            Returns:
+                Time expression.
+        """
         if startinc is True:
-            startexp = TagExp.ge(self, start)
+            startexp = TagExp.greater_equal(self, start)
         else:
-            startexp = TagExp.gt(self, start)
+            startexp = TagExp.greater_than(self, start)
         if endinc is True:
-            endexp = TagExp.le(self, end)
+            endexp = TagExp.less_equal(self, end)
         else:
-            endexp = TagExp.lt(self, end)
+            endexp = TagExp.less_than(self, end)
         return startexp & endexp
 
 
 class TagExp(object):
+    """ A tag query expression. """
     def __init__(self, left, op, right):
         self._left = left
         self._op = op
@@ -111,33 +136,41 @@ class TagExp(object):
         return TagExp(self._left, ~self._op, self._right)
 
     @classmethod
-    def eq(cls, self, other):
+    def equals(cls, self, other):
+        """ left = right """
         return TagExp(self, operations.EQ, other)
 
     @classmethod
-    def ne(cls, self, other):
+    def notequals(cls, self, other):
+        """ left != right """
         return TagExp(self, operations.NE, other)
 
     @classmethod
-    def gt(cls, self, other):
+    def greater_than(cls, self, other):
+        """ left > right """
         return TagExp(self, operations.GT, other)
 
     @classmethod
-    def lt(cls, self, other):
+    def less_than(cls, self, other):
+        """ left < right """
         return TagExp(self, operations.LT, other)
 
     @classmethod
-    def ge(cls, self, other):
+    def greater_equal(cls, self, other):
+        """ left >= right """
         return TagExp(self, operations.GE, other)
 
     @classmethod
-    def le(cls, self, other):
+    def less_equal(cls, self, other):
+        """ left <= right """
         return TagExp(self, operations.LE, other)
 
     @classmethod
-    def lk(cls, self, other):
+    def like(cls, self, other):
+        """ left =~ right """
         return TagExp(self, operations.LK, other)
 
     @classmethod
-    def nk(cls, self, other):
+    def notlike(cls, self, other):
+        """ left !~ right """
         return TagExp(self, operations.NK, other)

@@ -37,5 +37,5 @@ setup(
     description=DESC,
     long_description=LONG,
     classifiers=CLASSIFIERS,
-    install_requires=[],
+    install_requires=["influxdb>=3.0.0"],
     test_suite="nose.collector")
