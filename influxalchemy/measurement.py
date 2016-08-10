@@ -5,7 +5,10 @@ from . import operations
 
 class MetaMeasurement(type):
     def __getattr__(self, name):
-        return Tag(name, self)
+        if name == "time":
+            return Time(name, self)
+        else:
+            return Tag(name, self)
 
     def __str__(self):
         try:
@@ -69,12 +72,25 @@ class Tag(object):
         return TagExp.nk(self, other)
 
 
+class Time(Tag):
+    def between(self, start, end, startinc=True, endinc=True):
+        if startinc is True:
+            startexp = TagExp.ge(self, start)
+        else:
+            startexp = TagExp.gt(self, start)
+        if endinc is True:
+            endexp = TagExp.le(self, end)
+        else:
+            endexp = TagExp.lt(self, end)
+        return startexp & endexp
+
+
 class TagExp(object):
     def __init__(self, left, op, right):
         self._left = left
         self._op = op
         lits = [operations.LK, operations.NK, operations.AND, operations.OR]
-        if self._op in lits:
+        if self._op in lits or isinstance(left, Time):
             self._right = right
         else:
             self._right = repr(right)
