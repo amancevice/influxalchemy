@@ -7,14 +7,18 @@ from influxalchemy.measurement import Measurement
 from nose import tools
 
 
-def test_group_by():
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_group_by(mock_qry):
+    mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
     db = influxdb.InfluxDBClient(database="example")
     client = InfluxAlchemy(db)
     query = client.query(Measurement.new("fizz")).group_by("buzz")
     tools.assert_equal(str(query), "SELECT * FROM fizz GROUP BY buzz;")
 
 
-def test_filter_by():
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_filter_by(mock_qry):
+    mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
     db = influxdb.InfluxDBClient(database="example")
     client = InfluxAlchemy(db)
     query = client.query(Measurement.new("fizz")).filter_by(buzz="goo")
