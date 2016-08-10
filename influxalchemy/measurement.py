@@ -20,18 +20,6 @@ class MetaMeasurement(type):
         measurement = "/%s|%s/" % (str(self).strip("/"), other)
         return type(name, bases, {"__measurement__": measurement})
 
-    def tags(self, client):
-        tags = client.query("SHOW tag keys FROM %s" % self)
-        for tag in tags.get_points():
-            for val in tag.values():
-                yield val
-
-    def fields(self, client):
-        fields = client.query("SHOW field keys FROM %s" % self)
-        for field in fields.get_points():
-            for val in field.values():
-                yield val
-
     @property
     def measurement(self):
         return self
@@ -41,7 +29,7 @@ class Measurement(object):
     __metaclass__ = MetaMeasurement
 
     @classmethod
-    def generate(cls, name):
+    def new(cls, name):
         return type(name, (cls,), {"__measurement__": name})
 
 
@@ -51,7 +39,7 @@ class Tag(object):
         self.measurement = measurement
 
     def __repr__(self):
-        return "<%s.%s>" % (self._measurement.__measurement__, self._name)
+        return "<%s.%s>" % (self.measurement.__measurement__, self._name)
 
     def __str__(self):
         return self._name
@@ -82,23 +70,26 @@ class Tag(object):
 
 
 class TagExp(object):
-    def __init__(self, left, op, right, exp="%s%s%r"):
+    def __init__(self, left, op, right):
         self._left = left
         self._op = op
-        self._right = right
-        self._exp = exp
+        lits = [operations.LK, operations.NK, operations.AND, operations.OR]
+        if self._op in lits:
+            self._right = right
+        else:
+            self._right = repr(right)
 
     def __repr__(self):
         return "[ %s ]" % self
 
     def __str__(self):
-        return self._exp % (self._left, self._op, self._right)
+        return "%s%s%s" % (self._left, self._op, self._right)
 
     def __and__(self, other):
-        return TagExp(str(self), " AND ", str(other), "%s%s%s")
+        return TagExp(str(self), " AND ", str(other))
 
     def __or__(self, other):
-        return TagExp(str(self), " OR ", str(other), "%s%s%s")
+        return TagExp(str(self), " OR ", str(other))
 
     def __invert__(self):
         return TagExp(self._left, ~self._op, self._right)
@@ -129,8 +120,8 @@ class TagExp(object):
 
     @classmethod
     def lk(cls, self, other):
-        return TagExp(self, operations.LK, other, "%s%s%s")
+        return TagExp(self, operations.LK, other)
 
     @classmethod
     def nk(cls, self, other):
-        return TagExp(self, operations.NK, other, "%s%s%s")
+        return TagExp(self, operations.NK, other)

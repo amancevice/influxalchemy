@@ -15,6 +15,12 @@ class Operation(object):
     def __invert__(self):
         return Operation(self._nop, self._op)
 
+    def __eq__(self, other):
+        return str(self) == str(other)
+
+    def __ne__(self, other):
+        return str(self) != str(other)
+
 
 EQ = Operation(" = ", " != ")
 NE = Operation(" != ", " = ")
@@ -24,3 +30,5 @@ GE = Operation(" >= ", " < ")
 LE = Operation(" <= ", " > ")
 LK = Operation(" =~ ", " !~ ")
 NK = Operation(" !~ ", " =~ ")
+AND = Operation(" AND ", " OR ")
+OR = Operation(" OR ", " AND ")

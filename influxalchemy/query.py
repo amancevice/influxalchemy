@@ -27,32 +27,38 @@ class InfluxDBQuery(object):
         expressions = self._expressions + expressions
         return InfluxDBQuery(self._entities, self._client, *expressions)
 
+    def filter_by(self, **kwargs):
+        expressions = self._expressions
+        for key, val in kwargs.items():
+            expressions += measurement.TagExp.eq(key, val),
+        return InfluxDBQuery(self._entities, self._client, *expressions)
+
     def execute(self):
-        return self._client.query(str(self))
+        return self._client.bind.query(str(self))
+
+    @property
+    def measurement(self):
+        measurements = set(x.measurement for x in self._entities)
+        return reduce(lambda x, y: x | y, measurements)
 
     @property
     def _select(self):
-        if len(self._entities) == 1 \
-                and isinstance(self._entities[0], measurement.MetaMeasurement):
-            yield "*"
-        else:
-            for ent in self._entities:
-                try:
-                    if issubclass(ent, measurement.Measurement):
-                        for tag in ent.tags(self._client):
-                            yield tag
-                        for field in ent.fields(self._client):
-                            yield field
-                except TypeError:
-                    yield str(ent)
+        for ent in self._entities:
+            # Entity is a Tag
+            if isinstance(ent, measurement.Tag):
+                yield str(ent)
+            # Entity is a Measurement
+            else:
+                for tag in self._client.tags(ent):
+                    yield tag
+                for field in self._client.fields(ent):
+                    yield field
 
     @property
     def _from(self):
-        measurements = set(x.measurement for x in self._entities)
-        measurement = reduce(lambda x, y: x | y, measurements)
-        return str(measurement)
+        return str(self.measurement)
 
     @property
     def _where(self):
         for exp in self._expressions:
-            yield str(exp)
+            yield "(%s)" % exp
