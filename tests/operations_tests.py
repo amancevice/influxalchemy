@@ -1,4 +1,4 @@
-""" Test Operations. """
+""" InfluxAlchemy Operations. """
 
 from nose import tools
 from influxalchemy.operations import Operation

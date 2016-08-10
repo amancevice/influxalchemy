@@ -49,7 +49,7 @@ class InfluxDBQuery(object):
         expressions = self._expressions
         for key, val in kwargs.items():
             expressions += measurement.TagExp.equals(key, val),
-        return InfluxDBQuery(self._entities, self._client, *expressions)
+        return InfluxDBQuery(self._entities, self._client, expressions)
 
     def group_by(self, groupby):
         """ Group query. """

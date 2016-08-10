@@ -12,10 +12,13 @@ class MetaMeasurement(type):
             return Tag(name, cls)
 
     def __str__(cls):
-        try:
-            return cls.__measurement__
-        except AttributeError:
-            return cls.__name__
+        return cls.__measurement__
+
+    def __eq__(cls, other):
+        return str(cls) == str(other)
+
+    def __ne__(cls, other):
+        return str(cls) != str(other)
 
     def __or__(cls, other):
         left = str(cls).strip("/")
@@ -51,11 +54,11 @@ class Tag(object):
         self._name = name
         self.measurement = measurement
 
-    def __repr__(self):
-        return "<%s.%s>" % (self.measurement.__measurement__, self._name)
-
     def __str__(self):
         return self._name
+
+    def __repr__(self):
+        return "<%s.%s>" % (self.measurement.__measurement__, self._name)
 
     def __eq__(self, other):
         return TagExp.equals(self, other)
@@ -120,11 +123,17 @@ class TagExp(object):
         else:
             self._right = repr(right)
 
+    def __str__(self):
+        return "%s%s%s" % (self._left, self._op, self._right)
+
     def __repr__(self):
         return "[ %s ]" % self
 
-    def __str__(self):
-        return "%s%s%s" % (self._left, self._op, self._right)
+    def __eq__(self, other):
+        return str(self) == str(other)
+
+    def __ne__(self, other):
+        return str(self) != str(other)
 
     def __and__(self, other):
         return TagExp(str(self), " AND ", str(other))
@@ -138,39 +147,39 @@ class TagExp(object):
     @classmethod
     def equals(cls, self, other):
         """ left = right """
-        return TagExp(self, operations.EQ, other)
+        return cls(self, operations.EQ, other)
 
     @classmethod
     def notequals(cls, self, other):
         """ left != right """
-        return TagExp(self, operations.NE, other)
+        return cls(self, operations.NE, other)
 
     @classmethod
     def greater_than(cls, self, other):
         """ left > right """
-        return TagExp(self, operations.GT, other)
+        return cls(self, operations.GT, other)
 
     @classmethod
     def less_than(cls, self, other):
         """ left < right """
-        return TagExp(self, operations.LT, other)
+        return cls(self, operations.LT, other)
 
     @classmethod
     def greater_equal(cls, self, other):
         """ left >= right """
-        return TagExp(self, operations.GE, other)
+        return cls(self, operations.GE, other)
 
     @classmethod
     def less_equal(cls, self, other):
         """ left <= right """
-        return TagExp(self, operations.LE, other)
+        return cls(self, operations.LE, other)
 
     @classmethod
     def like(cls, self, other):
         """ left =~ right """
-        return TagExp(self, operations.LK, other)
+        return cls(self, operations.LK, other)
 
     @classmethod
     def notlike(cls, self, other):
         """ left !~ right """
-        return TagExp(self, operations.NK, other)
+        return cls(self, operations.NK, other)
