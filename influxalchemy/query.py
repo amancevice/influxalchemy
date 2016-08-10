@@ -1,5 +1,7 @@
 """ InfluxDB Query Object. """
 
+import functools
+
 import influxdb
 from . import measurement
 
@@ -58,7 +60,7 @@ class InfluxDBQuery(object):
     def measurement(self):
         """ Query measurement. """
         measurements = set(x.measurement for x in self._entities)
-        return reduce(lambda x, y: x | y, measurements)
+        return functools.reduce(lambda x, y: x | y, measurements)
 
     @property
     def _select(self):
