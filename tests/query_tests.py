@@ -8,6 +8,35 @@ from nose import tools
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
+def test_repr(mock_qry):
+    mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    query = client.query(Measurement.new("fizz"))
+    tools.assert_equal(repr(query), "SELECT * FROM fizz;")
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_execute(mock_qry):
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    query = client.query(Measurement.new("fizz").buzz)
+    query.execute()
+    mock_qry.assert_called_with("SELECT buzz FROM fizz;")
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_filter(mock_qry):
+    mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    meas = Measurement.new("fizz")
+    query = client.query(meas).filter(meas.buzz == "goo")
+    tools.assert_equal(repr(query), "SELECT * FROM fizz WHERE (buzz = 'goo');")
+
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
 def test_group_by(mock_qry):
     mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
     db = influxdb.InfluxDBClient(database="example")

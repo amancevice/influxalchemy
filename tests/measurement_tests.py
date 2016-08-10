@@ -17,6 +17,12 @@ def test_meta_str():
     yield tools.assert_equal, str(meas), "fizz"
 
 
+def test_meta_ne():
+    meas0 = Measurement.new("fizz")
+    meas1 = Measurement.new("buzz")
+    yield tools.assert_true, meas0 != meas1
+
+
 def test_meta_or():
     meas0 = Measurement.new("fizz")
     meas1 = Measurement.new("buzz")
@@ -116,6 +122,14 @@ def test_time_between():
     yield tools.assert_equal, exp, \
         TagExp(meas.time, " >= ", "'2016-01-01'") & \
         TagExp(meas.time, " <= ", "now() - 7d")
+
+
+def test_time_between_excl():
+    meas = Measurement.new("fizz")
+    exp = meas.time.between("'2016-01-01'", "now() - 7d", False, False)
+    yield tools.assert_equal, exp, \
+        TagExp(meas.time, " > ", "'2016-01-01'") & \
+        TagExp(meas.time, " < ", "now() - 7d")
 
 
 def test_exp_init():

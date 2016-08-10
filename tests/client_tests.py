@@ -26,3 +26,23 @@ def test_measurements(mock_flux):
     client = InfluxAlchemy(db)
     measurements = list(client.measurements())
     mock_flux.assert_called_once_with("SHOW MEASUREMENTS;")
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_tags(mock_flux):
+    mock_res = mock.MagicMock()
+    mock_res.get_points.return_value = [{"name": "fizz"}]
+    mock_flux.return_value = mock_res
+    db = influxdb.InfluxDBClient(database="fizz")
+    client = InfluxAlchemy(db)
+    tools.assert_equal(client.tags(Measurement.new("foo")), ["fizz"])
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_fields(mock_flux):
+    mock_res = mock.MagicMock()
+    mock_res.get_points.return_value = [{"name": "fizz"}]
+    mock_flux.return_value = mock_res
+    db = influxdb.InfluxDBClient(database="fizz")
+    client = InfluxAlchemy(db)
+    tools.assert_equal(client.fields(Measurement.new("foo")), ["fizz"])
