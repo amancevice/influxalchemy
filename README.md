@@ -3,7 +3,7 @@
 [![build](https://travis-ci.org/amancevice/influxalchemy.svg?branch=master)](https://travis-ci.org/amancevice/influxalchemy)
 [![codecov](https://codecov.io/gh/amancevice/influxalchemy/branch/master/graph/badge.svg)](https://codecov.io/gh/amancevice/influxalchemy)
 [![pypi](https://badge.fury.io/py/influxalchemy.svg)](https://badge.fury.io/py/influxalchemy)
-[![python](https://img.shields.io/badge/python-2.7-blue.svg)](https://img.shields.io/badge/python-2.7-blue.svg)
+[![python](https://img.shields.io/badge/python-2.7--3.5-blue.svg)](https://img.shields.io/badge/python-2.7--3.5-blue.svg)
 
 Query InfluxDB using SQLAlchemy-style syntax
 

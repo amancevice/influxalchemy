@@ -1,8 +1,8 @@
 """ InfluxAlchemy Measurements. """
 
 from influxalchemy.measurement import Measurement
-from influxalchemy.measurement import Tag
-from influxalchemy.measurement import TagExp
+from influxalchemy.meta import Tag
+from influxalchemy.meta import TagExp
 from influxalchemy.operations import *
 from nose import tools
 

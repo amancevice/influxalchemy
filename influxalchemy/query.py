@@ -2,8 +2,7 @@
 
 import functools
 
-import influxdb
-from . import measurement
+from . import meta
 
 
 class InfluxDBQuery(object):
@@ -48,7 +47,7 @@ class InfluxDBQuery(object):
         """ Filter query by tag value. """
         expressions = self._expressions
         for key, val in kwargs.items():
-            expressions += measurement.TagExp.equals(key, val),
+            expressions += meta.TagExp.equals(key, val),
         return InfluxDBQuery(self._entities, self._client, expressions)
 
     def group_by(self, groupby):
@@ -68,7 +67,7 @@ class InfluxDBQuery(object):
         selects = []
         for ent in self._entities:
             # Entity is a Tag
-            if isinstance(ent, measurement.Tag):
+            if isinstance(ent, meta.Tag):
                 selects.append(str(ent))
             # Entity is a Measurement
             else:
@@ -77,7 +76,8 @@ class InfluxDBQuery(object):
                         selects.append(tag)
                     for field in self._client.fields(ent):
                         selects.append(field)
-                except influxdb.exceptions.InfluxDBClientError:
+                # pylint: disable=bare-except
+                except:
                     selects = ["*"]
         return selects
 
