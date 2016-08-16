@@ -5,11 +5,18 @@ from . import operations
 
 class MetaMeasurement(type):
     """ Meta class of Measurement. """
-    def __getattr__(cls, name):
-        if name == "time":
-            return Time(name, cls)
-        else:
-            return Tag(name, cls)
+    def __new__(mcs, name, bases, dict_):
+        dict_.setdefault("__measurement__", name)
+        return super(MetaMeasurement, mcs).__new__(mcs, name, bases, dict_)
+
+    def __getattribute__(cls, name):
+        try:
+            return super(MetaMeasurement, cls).__getattribute__(name)
+        except AttributeError:
+            if name == "time":
+                return Time(name, cls)
+            else:
+                return Tag(name, cls)
 
     def __str__(cls):
         return cls.__measurement__

@@ -8,13 +8,22 @@
 Query InfluxDB using SQLAlchemy-style syntax
 
 
+## Installation
+
+```bash
+pip install influxalchemy
+```
+
+
+## Usage
+
 ```python
 import influxdb
 import influxalchemy
 ```
 
-## Define InfluxAlchemy Measurements
 
+### Define InfluxAlchemy Measurements
 
 ```python
 class Widgets(influxalchemy.Measurement):
@@ -25,7 +34,10 @@ class Wombats(influxalchemy.Measurement):
     __measurement__ = 'wombats'
 ```
 
-## Open InfluxAlchemy Connection
+The class-attribute `__measurement__` can be omitted and will default to the class name if absent.
+
+
+### Open InfluxAlchemy Connection
 
 
 ```python
@@ -99,7 +111,7 @@ flux.query(Widgets).filter(clause1 | clause2)
 ```
 
 
-### Group Bys
+### Group By
 
 ```python
 # SELECT * FROM widgets GROUP BY time(1d);
@@ -119,3 +131,5 @@ flux.query(Widgets).filter(Widgets.time > "now() - 7d")
 # SELECT * FROM widgets WHERE time >= '2016-01-01' AND time <= now() - 7d;
 flux.query(Widgets).filter(Widgets.time.between("'2016-01-01'", "now() - 7d"))
 ```
+
+Note that the date is wrapped in single-quotes (`'`).
