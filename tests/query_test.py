@@ -4,7 +4,6 @@ import influxdb
 import mock
 from influxalchemy.client import InfluxAlchemy
 from influxalchemy.measurement import Measurement
-from nose import tools
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
@@ -13,7 +12,7 @@ def test_repr(mock_qry):
     db = influxdb.InfluxDBClient(database="example")
     client = InfluxAlchemy(db)
     query = client.query(Measurement.new("fizz"))
-    tools.assert_equal(repr(query), "SELECT * FROM fizz;")
+    assert repr(query) == "SELECT * FROM fizz;"
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
@@ -32,8 +31,7 @@ def test_filter(mock_qry):
     client = InfluxAlchemy(db)
     meas = Measurement.new("fizz")
     query = client.query(meas).filter(meas.buzz == "goo")
-    tools.assert_equal(repr(query), "SELECT * FROM fizz WHERE (buzz = 'goo');")
-
+    assert repr(query) == "SELECT * FROM fizz WHERE (buzz = 'goo');"
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
@@ -42,7 +40,7 @@ def test_group_by(mock_qry):
     db = influxdb.InfluxDBClient(database="example")
     client = InfluxAlchemy(db)
     query = client.query(Measurement.new("fizz")).group_by("buzz")
-    tools.assert_equal(str(query), "SELECT * FROM fizz GROUP BY buzz;")
+    assert str(query) == "SELECT * FROM fizz GROUP BY buzz;"
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
@@ -51,7 +49,7 @@ def test_filter_by(mock_qry):
     db = influxdb.InfluxDBClient(database="example")
     client = InfluxAlchemy(db)
     query = client.query(Measurement.new("fizz")).filter_by(buzz="goo")
-    tools.assert_equal(str(query), "SELECT * FROM fizz WHERE (buzz = 'goo');")
+    assert str(query) == "SELECT * FROM fizz WHERE (buzz = 'goo');"
 
 
 def test_tags():
@@ -59,7 +57,7 @@ def test_tags():
     client = InfluxAlchemy(db)
     fizz = Measurement.new("fizz")
     query = client.query(fizz.buzz, fizz.bug)
-    tools.assert_equal(str(query), "SELECT buzz, bug FROM fizz;")
+    assert str(query) == "SELECT buzz, bug FROM fizz;"
 
 
 @mock.patch("influxalchemy.InfluxAlchemy.tags")
@@ -71,4 +69,4 @@ def test_get_tags_fields(mock_fields, mock_tags):
     client = InfluxAlchemy(db)
     fizz = Measurement.new("fuzz")
     query = client.query(fizz)
-    tools.assert_equal(str(query), "SELECT fizz, buzz, foo, goo FROM fuzz;")
+    assert str(query) == "SELECT fizz, buzz, foo, goo FROM fuzz;"

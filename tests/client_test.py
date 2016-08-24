@@ -5,7 +5,6 @@ import influxdb
 from influxalchemy.client import InfluxAlchemy
 from influxalchemy.measurement import Measurement
 from influxalchemy.query import InfluxDBQuery
-from nose import tools
 
 
 @mock.patch("influxdb.InfluxDBClient")
@@ -14,7 +13,7 @@ def test_query(mock_flux):
     db.query.side_effect = influxdb.exceptions.InfluxDBClientError(None)
     client = InfluxAlchemy(db)
     query = client.query(Measurement.new("buzz"))
-    tools.assert_equal(str(query), "SELECT * FROM buzz;")
+    assert str(query) == "SELECT * FROM buzz;"
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
@@ -35,7 +34,7 @@ def test_tags(mock_flux):
     mock_flux.return_value = mock_res
     db = influxdb.InfluxDBClient(database="fizz")
     client = InfluxAlchemy(db)
-    tools.assert_equal(client.tags(Measurement.new("foo")), ["fizz"])
+    assert client.tags(Measurement.new("foo")) == ["fizz"]
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
@@ -45,4 +44,4 @@ def test_fields(mock_flux):
     mock_flux.return_value = mock_res
     db = influxdb.InfluxDBClient(database="fizz")
     client = InfluxAlchemy(db)
-    tools.assert_equal(client.fields(Measurement.new("foo")), ["fizz"])
+    assert client.fields(Measurement.new("foo")) == ["fizz"]
