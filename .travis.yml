@@ -5,9 +5,9 @@ python:
 - '3.3'
 - '3.4'
 - '3.5'
-install: pip install . codecov mock nose pylint
+install: pip install . codecov mock pytest pytest-cov pylint
 script:
-- nosetests --with-coverage --cover-package influxalchemy
+- py.test --cov influxalchemy
 - pylint influxalchemy --ignore measurement3.py
 after_success: codecov
 deploy:
