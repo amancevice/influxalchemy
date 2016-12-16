@@ -1,5 +1,7 @@
 """ InfluxAlchemy Query Tests. """
 
+from datetime import date, datetime, timedelta, timezone
+
 import influxdb
 import mock
 from influxalchemy.client import InfluxAlchemy
@@ -32,6 +34,41 @@ def test_filter(mock_qry):
     meas = Measurement.new("fizz")
     query = client.query(meas).filter(meas.buzz == "goo")
     assert repr(query) == "SELECT * FROM fizz WHERE (buzz = 'goo');"
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_filter_time_naive(mock_qry):
+    mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    meas = Measurement.new("fizz")
+    d = datetime(2016, 10, 1)
+    query = client.query(meas).filter(meas.time >= d)
+    assert repr(query) == "SELECT * FROM fizz WHERE (time >= '2016-10-01T00:00:00+00:00');"
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_filter_time_date(mock_qry):
+    mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    meas = Measurement.new("fizz")
+    d = date(2016, 10, 1)
+    query = client.query(meas).filter(meas.time >= d)
+    assert repr(query) == "SELECT * FROM fizz WHERE (time >= '2016-10-01');"
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_filter_time_aware(mock_qry):
+    mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    meas = Measurement.new("fizz")
+    tz_indochina = timezone(timedelta(hours=7))
+    d_low = datetime(2016, 9, 1, tzinfo=tz_indochina)
+    d_high = datetime(2016, 10, 2, 8)
+    query = client.query(meas).filter(meas.time.between(d_low, d_high))
+    assert repr(query) == "SELECT * FROM fizz WHERE (time >= '2016-09-01T00:00:00+07:00' AND time <= '2016-10-02T08:00:00+00:00');"
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
