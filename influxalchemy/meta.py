@@ -1,20 +1,21 @@
 """ InfluxDB Meta Measurement. """
 
-from datetime import date, datetime, timezone
+from datetime import date, timezone
 
 from . import operations
 
 
-def make_tz_aware(d):
+def make_tz_aware(datetime_obj):
     """ Make a date/datetime object to be timezone-aware """
     # 'date' object doesn't need to be timezone aware
-    if type(d) is date:
-        return d
+    # pylint: disable=unidiomatic-typecheck
+    if type(datetime_obj) is date:
+        return datetime_obj
     # Already aware
-    if d.tzinfo:
-        return d
+    if datetime_obj.tzinfo:
+        return datetime_obj
     # With naive datetime object, assume it is UTC
-    return d.replace(tzinfo=timezone.utc)
+    return datetime_obj.replace(tzinfo=timezone.utc)
 
 
 class MetaMeasurement(type):
