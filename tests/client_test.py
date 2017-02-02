@@ -30,18 +30,21 @@ def test_measurements(mock_flux):
 @mock.patch("influxdb.InfluxDBClient.query")
 def test_tags(mock_flux):
     mock_res = mock.MagicMock()
-    mock_res.get_points.return_value = [{"name": "fizz"}]
+    mock_res.get_points.return_value = [{'tagKey': 'sensor_id'}]
     mock_flux.return_value = mock_res
     db = influxdb.InfluxDBClient(database="fizz")
     client = InfluxAlchemy(db)
-    assert client.tags(Measurement.new("foo")) == ["fizz"]
+    assert client.tags(Measurement.new("environment")) == ["sensor_id"]
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
 def test_fields(mock_flux):
     mock_res = mock.MagicMock()
-    mock_res.get_points.return_value = [{"name": "fizz"}]
+    mock_res.get_points.return_value = [
+        {'fieldKey': 'humidity', 'fieldType': 'float'},
+        {'fieldKey': 'temperature', 'fieldType': 'float'}
+    ]
     mock_flux.return_value = mock_res
     db = influxdb.InfluxDBClient(database="fizz")
     client = InfluxAlchemy(db)
-    assert client.fields(Measurement.new("foo")) == ["fizz"]
+    assert client.fields(Measurement.new("environment")) == ["humidity", "temperature"]
