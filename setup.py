@@ -37,5 +37,5 @@ setup(
     description=DESC,
     long_description=LONG,
     classifiers=CLASSIFIERS,
-    install_requires=["pytz;python_version<'3.2'", "influxdb>=3.0.0"],
+    install_requires=["pytz", "influxdb>=3.0.0"],
     test_suite="nose.collector")
