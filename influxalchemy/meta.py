@@ -1,8 +1,19 @@
 """ InfluxDB Meta Measurement. """
 
-from datetime import date, timezone
+import sys
+from datetime import date
 
 from . import operations
+
+if sys.version_info.major >= 3:
+    # pylint: disable=no-name-in-module
+    from datetime import timezone
+    # pylint: disable=invalid-name
+    utc = timezone.utc
+else:
+    import pytz
+    # pylint: disable=invalid-name
+    utc = pytz.utc
 
 
 def make_tz_aware(datetime_obj):
@@ -15,7 +26,7 @@ def make_tz_aware(datetime_obj):
     if datetime_obj.tzinfo:
         return datetime_obj
     # With naive datetime object, assume it is UTC
-    return datetime_obj.replace(tzinfo=timezone.utc)
+    return datetime_obj.replace(tzinfo=utc)
 
 
 class MetaMeasurement(type):

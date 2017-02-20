@@ -1,6 +1,11 @@
 """ InfluxAlchemy Query Tests. """
 
-from datetime import date, datetime, timedelta, timezone
+import sys
+from datetime import date, datetime, timedelta
+if sys.version_info.major >= 3:
+    from datetime import timezone
+else:
+    from pytz import timezone
 
 import influxdb
 import mock
@@ -64,11 +69,14 @@ def test_filter_time_aware(mock_qry):
     db = influxdb.InfluxDBClient(database="example")
     client = InfluxAlchemy(db)
     meas = Measurement.new("fizz")
-    tz_indochina = timezone(timedelta(hours=7))
-    d_low = datetime(2016, 9, 1, tzinfo=tz_indochina)
+    if sys.version_info.major >= 3:
+        tz_vietnam = timezone(timedelta(hours=7, minutes=7))
+    else:
+        tz_vietnam = timezone('Asia/Ho_Chi_Minh')
+    d_low = datetime(2016, 9, 1, tzinfo=tz_vietnam)
     d_high = datetime(2016, 10, 2, 8)
     query = client.query(meas).filter(meas.time.between(d_low, d_high))
-    assert repr(query) == "SELECT * FROM fizz WHERE (time >= '2016-09-01T00:00:00+07:00' AND time <= '2016-10-02T08:00:00+00:00');"
+    assert repr(query) == "SELECT * FROM fizz WHERE (time >= '2016-09-01T00:00:00+07:07' AND time <= '2016-10-02T08:00:00+00:00');"
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
