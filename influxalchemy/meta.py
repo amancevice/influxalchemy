@@ -12,7 +12,7 @@ if sys.version_info.major >= 3:
     utc = timezone.utc
 else:
     import pytz
-    # pylint: disable=invalid-name
+    # pylint: disable=invalid-name,redefined-variable-type
     utc = pytz.utc
 
 
