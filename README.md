@@ -129,7 +129,8 @@ flux.query(Widgets).group_by(Widgets.tag1)
 flux.query(Widgets).filter(Widgets.time > "now() - 7d")
 
 # SELECT * FROM widgets WHERE time >= '2016-01-01' AND time <= now() - 7d;
-flux.query(Widgets).filter(Widgets.time.between("'2016-01-01'", "now() - 7d"))
+d = date(2016, 1, 1)
+flux.query(Widgets).filter(Widgets.time.between(d, "now() - 7d"))
 ```
 
-Note that the date is wrapped in single-quotes (`'`).
+Note that naive datetime object will be assumed in UTC timezone.

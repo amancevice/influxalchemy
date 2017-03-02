@@ -1,6 +1,32 @@
 """ InfluxDB Meta Measurement. """
 
+import sys
+from datetime import date
+
 from . import operations
+
+if sys.version_info.major >= 3:
+    # pylint: disable=no-name-in-module
+    from datetime import timezone
+    # pylint: disable=invalid-name
+    utc = timezone.utc
+else:
+    import pytz
+    # pylint: disable=invalid-name,redefined-variable-type
+    utc = pytz.utc
+
+
+def make_tz_aware(datetime_obj):
+    """ Make a date/datetime object to be timezone-aware """
+    # 'date' object doesn't need to be timezone aware
+    # pylint: disable=unidiomatic-typecheck
+    if type(datetime_obj) is date:
+        return datetime_obj
+    # Already aware
+    if datetime_obj.tzinfo:
+        return datetime_obj
+    # With naive datetime object, assume it is UTC
+    return datetime_obj.replace(tzinfo=utc)
 
 
 class MetaMeasurement(type):
@@ -118,6 +144,11 @@ class TagExp(object):
         self._op = op
         lits = [operations.LK, operations.NK, operations.AND, operations.OR]
         if self._op in lits or isinstance(left, Time):
+            # If the right-hand-side value is a date/datetime object,
+            # we convert it to RFC3339 representation
+            # and wrap inside single quote
+            if isinstance(right, date):
+                right = repr(make_tz_aware(right).isoformat())
             self._right = right
         else:
             self._right = repr(right)

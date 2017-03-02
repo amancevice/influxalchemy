@@ -1,5 +1,6 @@
 """ InfluxAlchemy Measurements. """
 
+from datetime import datetime
 from influxalchemy.measurement import Measurement
 from influxalchemy.meta import Tag
 from influxalchemy.meta import TagExp
@@ -129,6 +130,15 @@ def test_time_between_excl():
     assert exp == \
         TagExp(meas.time, " > ", "'2016-01-01'") & \
         TagExp(meas.time, " < ", "now() - 7d")
+
+
+def test_time_between_dt():
+    meas = Measurement.new("fizz")
+    d = datetime(2016, 1, 1)
+    exp = meas.time.between(d, "now() - 7d")
+    assert exp == \
+        TagExp(meas.time, " >= ", d) & \
+        TagExp(meas.time, " <= ", "now() - 7d")
 
 
 def test_exp_init():

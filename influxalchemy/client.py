@@ -30,11 +30,11 @@ class InfluxAlchemy(object):
     def tags(self, measurement):
         """ Get tags of a measurements in InfluxDB. """
         tags = self.bind.query("SHOW tag keys FROM %s" % measurement)
-        pts = sorted(set(y for x in tags.get_points() for y in x.values()))
+        pts = sorted(set(t['tagKey'] for t in tags.get_points()))
         return pts
 
     def fields(self, measurement):
         """ Get fields of a measurements in InfluxDB. """
         fields = self.bind.query("SHOW field keys FROM %s" % measurement)
-        pts = sorted(set(y for x in fields.get_points() for y in x.values()))
+        pts = sorted(set(f['fieldKey'] for f in fields.get_points()))
         return pts
