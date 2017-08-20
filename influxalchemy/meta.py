@@ -1,19 +1,15 @@
 """ InfluxDB Meta Measurement. """
 
-import sys
 from datetime import date
 
 from . import operations
 
-if sys.version_info.major >= 3:
-    # pylint: disable=no-name-in-module
+try:
     from datetime import timezone
-    # pylint: disable=invalid-name
-    utc = timezone.utc
-else:
+    UTC = timezone.utc
+except ImportError:
     import pytz
-    # pylint: disable=invalid-name,redefined-variable-type
-    utc = pytz.utc
+    UTC = pytz.utc
 
 
 def make_tz_aware(datetime_obj):
@@ -26,7 +22,7 @@ def make_tz_aware(datetime_obj):
     if datetime_obj.tzinfo:
         return datetime_obj
     # With naive datetime object, assume it is UTC
-    return datetime_obj.replace(tzinfo=utc)
+    return datetime_obj.replace(tzinfo=UTC)
 
 
 class MetaMeasurement(type):
@@ -41,8 +37,7 @@ class MetaMeasurement(type):
         except AttributeError:
             if name == "time":
                 return Time(name, cls)
-            else:
-                return Tag(name, cls)
+            return Tag(name, cls)
 
     def __str__(cls):
         return cls.__measurement__
@@ -56,7 +51,7 @@ class MetaMeasurement(type):
     def __or__(cls, other):
         left = str(cls).strip("/")
         name = "_".join(left.split("|") + [str(other)])
-        bases = cls,
+        bases = (cls,)
         measurement = "/%s|%s/" % (str(cls).strip("/"), other)
         return type(name, bases, {"__measurement__": measurement})
 
