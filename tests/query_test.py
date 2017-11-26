@@ -115,3 +115,15 @@ def test_get_tags_fields(mock_fields, mock_tags):
     fizz = Measurement.new("fuzz")
     query = client.query(fizz)
     assert str(query) == "SELECT fizz, buzz, foo, goo FROM fuzz;"
+
+
+@mock.patch("influxalchemy.InfluxAlchemy.tags")
+@mock.patch("influxalchemy.InfluxAlchemy.fields")
+def test_get_empty_tags_fields(mock_fields, mock_tags):
+    mock_tags.return_value = []
+    mock_fields.return_value = []
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    fizz = Measurement.new("fuzz")
+    query = client.query(fizz)
+    assert str(query) == "SELECT * FROM fuzz;"
