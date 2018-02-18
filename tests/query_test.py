@@ -127,3 +127,18 @@ def test_get_empty_tags_fields(mock_fields, mock_tags):
     fizz = Measurement.new("fuzz")
     query = client.query(fizz)
     assert str(query) == "SELECT * FROM fuzz;"
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_limit(mock_limit):
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    fizz = Measurement.new("fuzz")
+    query = client.query(fizz).limit(1)
+    assert str(query) == "SELECT * FROM fuzz LIMIT 1;"
+
+    query2 = client.query(fizz).filter_by(**{'vendor':'quandl', 'market':'XCME'})
+    assert str(query2) == "SELECT * FROM fuzz WHERE (vendor = 'quandl') AND (market = 'XCME');"
+
+    query3 = client.query(fizz).filter(fizz.foo == '123').filter(fizz.boo == '555').limit(2)
+    assert str(query3) == "SELECT * FROM fuzz WHERE (foo = '123') AND (boo = '555') LIMIT 2;"
