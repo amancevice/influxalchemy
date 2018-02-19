@@ -15,6 +15,7 @@ class InfluxDBQuery(object):
         limit       (int):            LIMIT int
     """
     def __init__(self, entities, client, expressions=None, groupby=None, limit=None):
+        # pylint: disable=too-many-arguments
         self._entities = entities
         self._client = client
         self._expressions = expressions or ()
@@ -51,7 +52,7 @@ class InfluxDBQuery(object):
         """ Filter query by tag value. """
         expressions = self._expressions
         for key, val in kwargs.items():
-            expressions += meta.TagExp.equals(key, val),
+            expressions += (meta.TagExp.equals(key, val),)
         return InfluxDBQuery(self._entities, self._client, expressions=expressions)
 
     def group_by(self, groupby):
@@ -89,9 +90,7 @@ class InfluxDBQuery(object):
                 # pylint: disable=bare-except
                 except:
                     pass
-        if not selects:
-            selects = ["*"]
-        return selects
+        return selects or ["*"]
 
     @property
     def _from(self):
