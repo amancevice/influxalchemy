@@ -52,7 +52,7 @@ class InfluxDBQuery(object):
     def filter_by(self, **kwargs):
         """ Filter query by tag value. """
         expressions = self._expressions
-        for key, val in kwargs.items():
+        for key, val in sorted(kwargs.items()):
             expressions += (meta.TagExp.equals(key, val),)
         return InfluxDBQuery(self._entities, self._client,
                              expressions=expressions)
