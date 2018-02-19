@@ -1,5 +1,4 @@
 """ InfluxDB Query Object. """
-
 import functools
 
 from . import meta
@@ -14,7 +13,8 @@ class InfluxDBQuery(object):
         groupby     (str):            GROUP BY string
         limit       (int):            LIMIT int
     """
-    def __init__(self, entities, client, expressions=None, groupby=None, limit=None):
+    def __init__(self, entities, client, expressions=None, groupby=None,
+                 limit=None):
         # pylint: disable=too-many-arguments
         self._entities = entities
         self._client = client
@@ -46,14 +46,16 @@ class InfluxDBQuery(object):
     def filter(self, *expressions):
         """ Filter query. """
         expressions = self._expressions + expressions
-        return InfluxDBQuery(self._entities, self._client, expressions=expressions)
+        return InfluxDBQuery(self._entities, self._client,
+                             expressions=expressions)
 
     def filter_by(self, **kwargs):
         """ Filter query by tag value. """
         expressions = self._expressions
         for key, val in kwargs.items():
             expressions += (meta.TagExp.equals(key, val),)
-        return InfluxDBQuery(self._entities, self._client, expressions=expressions)
+        return InfluxDBQuery(self._entities, self._client,
+                             expressions=expressions)
 
     def group_by(self, groupby):
         """ Group query. """
@@ -64,7 +66,8 @@ class InfluxDBQuery(object):
         """ Limit query """
         assert isinstance(limit, int)
         return InfluxDBQuery(
-            self._entities, self._client, self._expressions, self._groupby, limit)
+            self._entities, self._client, self._expressions, self._groupby,
+            limit)
 
     @property
     def measurement(self):
@@ -87,8 +90,8 @@ class InfluxDBQuery(object):
                         selects.append(tag)
                     for field in self._client.fields(ent):
                         selects.append(field)
-                # pylint: disable=bare-except
-                except:
+                # pylint: disable=broad-except
+                except Exception:
                     pass
         return selects or ["*"]
 

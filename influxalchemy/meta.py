@@ -1,15 +1,14 @@
 """ InfluxDB Meta Measurement. """
-
 from datetime import date
 
 from . import operations
 
 try:
     from datetime import timezone
-    UTC = timezone.utc
-except ImportError:
-    import pytz
-    UTC = pytz.utc
+    UTC = timezone.utc  # pragma: no cover
+except ImportError:     # pragma: no cover
+    import pytz         # pragma: no cover
+    UTC = pytz.utc      # pragma: no cover
 
 
 def make_tz_aware(datetime_obj):
