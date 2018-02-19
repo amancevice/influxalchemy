@@ -1,10 +1,9 @@
 """ InfluxAlchemy Query Tests. """
-
 import sys
 from datetime import date, datetime, timedelta
-if sys.version_info.major >= 3:
+try:
     from datetime import timezone
-else:
+except ImportError:
     from pytz import timezone
 
 import influxdb
@@ -49,7 +48,8 @@ def test_filter_time_naive(mock_qry):
     meas = Measurement.new("fizz")
     d = datetime(2016, 10, 1)
     query = client.query(meas).filter(meas.time >= d)
-    assert repr(query) == "SELECT * FROM fizz WHERE (time >= '2016-10-01T00:00:00+00:00');"
+    assert repr(query) == \
+        "SELECT * FROM fizz WHERE (time >= '2016-10-01T00:00:00+00:00');"
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
@@ -76,7 +76,9 @@ def test_filter_time_aware(mock_qry):
     d_low = datetime(2016, 9, 1, tzinfo=tz_vietnam)
     d_high = datetime(2016, 10, 2, 8)
     query = client.query(meas).filter(meas.time.between(d_low, d_high))
-    assert repr(query) == "SELECT * FROM fizz WHERE (time >= '2016-09-01T00:00:00+07:07' AND time <= '2016-10-02T08:00:00+00:00');"
+    assert repr(query) == \
+        "SELECT * FROM fizz WHERE (time >= '2016-09-01T00:00:00+07:07' "\
+        "AND time <= '2016-10-02T08:00:00+00:00');"
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
@@ -130,15 +132,32 @@ def test_get_empty_tags_fields(mock_fields, mock_tags):
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
-def test_limit(mock_limit):
+def test_limit_1(mock_limit):
     db = influxdb.InfluxDBClient(database="example")
     client = InfluxAlchemy(db)
     fizz = Measurement.new("fuzz")
     query = client.query(fizz).limit(1)
     assert str(query) == "SELECT * FROM fuzz LIMIT 1;"
 
-    query2 = client.query(fizz).filter_by(**{'vendor':'quandl', 'market':'XCME'})
-    assert str(query2) == "SELECT * FROM fuzz WHERE (vendor = 'quandl') AND (market = 'XCME');"
 
-    query3 = client.query(fizz).filter(fizz.foo == '123').filter(fizz.boo == '555').limit(2)
-    assert str(query3) == "SELECT * FROM fuzz WHERE (foo = '123') AND (boo = '555') LIMIT 2;"
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_limit_2(mock_limit):
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    fizz = Measurement.new("fuzz")
+    query = client.query(fizz).filter_by(vendor='quandl', market='XCME')
+    assert str(query) == \
+        "SELECT * FROM fuzz WHERE (market = 'XCME') AND (vendor = 'quandl');"
+
+
+@mock.patch("influxdb.InfluxDBClient.query")
+def test_limit_3(mock_limit):
+    db = influxdb.InfluxDBClient(database="example")
+    client = InfluxAlchemy(db)
+    fizz = Measurement.new("fuzz")
+    query = client.query(fizz)\
+                  .filter(fizz.foo == '123')\
+                  .filter(fizz.boo == '555')\
+                  .limit(2)
+    assert str(query) == \
+        "SELECT * FROM fuzz WHERE (foo = '123') AND (boo = '555') LIMIT 2;"

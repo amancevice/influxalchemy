@@ -1,5 +1,4 @@
 """ InfluxAlchemy Client. """
-
 from . import query
 from .measurement import Measurement
 

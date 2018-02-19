@@ -1,16 +1,17 @@
 language: python
-cache: pip
 python:
 - '2.7'
 - '3.3'
 - '3.4'
 - '3.5'
 - '3.6'
-install: pip install . codecov mock pytest pytest-cov pylint
+install:
+- pip install . codecov mock pytest pytest-cov pylint
 script:
-- py.test --cov influxalchemy
-- pylint influxalchemy --ignore measurement3.py
-after_success: codecov
+- py.test
+- pylint influxalchemy
+after_success:
+- codecov
 deploy:
   provider: pypi
   user: amancevice
@@ -27,5 +28,7 @@ deploy:
       fUji+N3+CJ38B8budcltXql6yjld4v6yLDEMu7fVwEsjI+vDo0+VAkX9jEU7oYxgCgkwySjUX
       PWwdcwXikqX/PAI/rjWVlMbb/I=
   on:
-    tags: true
+    distributions: sdist bdist_wheel
+    python: '3.6'
     repo: amancevice/influxalchemy
+    tags: true

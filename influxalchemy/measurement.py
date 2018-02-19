@@ -1,10 +1,13 @@
 """ InfluxDB Measurement. """
+import six
+from . import meta
 
-import sys
 
-if sys.version_info.major >= 3:
-    # pylint: disable=import-error,unused-import
-    from .measurement3 import Measurement
-else:
-    # pylint: disable=unused-import
-    from .measurement2 import Measurement
+# pylint: disable=too-few-public-methods
+class Measurement(six.with_metaclass(meta.MetaMeasurement)):
+    """ InfluxDB Measurement. """
+    # pylint: disable=no-init
+    @classmethod
+    def new(cls, name):
+        """ Generate new Measurement class. """
+        return type(name, (cls,), {"__measurement__": name})
