@@ -78,7 +78,9 @@ class InfluxDBQuery(object):
                         selects.append(field)
                 # pylint: disable=bare-except
                 except:
-                    selects = ["*"]
+                    pass
+        if not selects:
+            selects = ["*"]
         return selects
 
     @property
