@@ -12,12 +12,14 @@ class InfluxDBQuery(object):
         client      (InfluxAlchemy):  InfluxAlchemy instance
         expressions (tuple):          Query filters
         groupby     (str):            GROUP BY string
+        limit       (int):            LIMIT int
     """
-    def __init__(self, entities, client, expressions=None, groupby=None):
+    def __init__(self, entities, client, expressions=None, groupby=None, limit=None):
         self._entities = entities
         self._client = client
         self._expressions = expressions or ()
         self._groupby = groupby
+        self._limit = limit
 
     def __str__(self):
         select = ", ".join(self._select)
@@ -29,6 +31,8 @@ class InfluxDBQuery(object):
             iql = "SELECT %s FROM %s" % (select, from_)
         if self._groupby is not None:
             iql += " GROUP BY %s" % self._groupby
+        if self._limit is not None:
+            iql += " LIMIT {0}".format(self._limit)
         return "%s;" % iql
 
     def __repr__(self):
@@ -41,19 +45,25 @@ class InfluxDBQuery(object):
     def filter(self, *expressions):
         """ Filter query. """
         expressions = self._expressions + expressions
-        return InfluxDBQuery(self._entities, self._client, expressions)
+        return InfluxDBQuery(self._entities, self._client, expressions=expressions)
 
     def filter_by(self, **kwargs):
         """ Filter query by tag value. """
         expressions = self._expressions
         for key, val in kwargs.items():
             expressions += meta.TagExp.equals(key, val),
-        return InfluxDBQuery(self._entities, self._client, expressions)
+        return InfluxDBQuery(self._entities, self._client, expressions=expressions)
 
     def group_by(self, groupby):
         """ Group query. """
         return InfluxDBQuery(
             self._entities, self._client, self._expressions, groupby)
+
+    def limit(self, limit):
+        """ Limit query """
+        assert isinstance(limit, int)
+        return InfluxDBQuery(
+            self._entities, self._client, self._expressions, self._groupby, limit)
 
     @property
     def measurement(self):

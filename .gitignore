@@ -1,3 +1,9 @@
+## Directory-based project format:
+.idea/
+**/.idea/
+*/.idea
+*/.idea/**
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
