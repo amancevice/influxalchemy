@@ -1,0 +1,20 @@
+[[source]]
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+influxdb = ">= 5.0"
+pandas = ">= 0.22"
+pytz = ">= 2018.3"
+six = ">= 1.11"
+
+[dev-packages]
+ipdb = "*"
+ipython = "*"
+mock = "*"
+pytest = "*"
+pytest-cov = "*"
+
+[requires]
+python_version = "3.6"
