@@ -1,0 +1,16 @@
+version: '3'
+services:
+  influxdb:
+    image: influxdb
+    ports:
+      - 8086:8086
+    volumes:
+      - influxdb:/var/lib/influxdb
+  seed:
+    command: sh -c 'curl https://s3-us-west-1.amazonaws.com/noaa.water.database.0.9/NOAA_data.txt > NOAA_data.txt && influx -import -host influxdb -path=NOAA_data.txt -precision=s'
+    depends_on:
+      - influxdb
+    image: influxdb
+volumes:
+  influxdb:
+    external: false
