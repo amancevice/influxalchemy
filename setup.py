@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
     name='influxalchemy',
-    version='0.1.1',
+    version='0.2.0',
     author='amancevice',
     author_email='smallweirdnum@gmail.com',
     packages=['influxalchemy'],
@@ -13,6 +13,6 @@ setup(
         '''See GitHub_ for documentation.
         .. _GitHub: https://github.com/amancevice/influxalchemy'''),
     install_requires=[
-        'pytz>=2016.10',
-        'influxdb>=3.0.0',
-        'six>=1.11.0'])
+        'pytz >= 2018.3',
+        'influxdb >= 5.0.0',
+        'six >= 1.11.0'])
