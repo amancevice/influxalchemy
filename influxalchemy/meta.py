@@ -26,9 +26,9 @@ def make_tz_aware(datetime_obj):
 
 class MetaMeasurement(type):
     """ Meta class of Measurement. """
-    def __new__(mcs, name, bases, dict_):
+    def __new__(cls, name, bases, dict_):
         dict_.setdefault("__measurement__", name)
-        return super(MetaMeasurement, mcs).__new__(mcs, name, bases, dict_)
+        return super(MetaMeasurement, cls).__new__(cls, name, bases, dict_)
 
     def __getattribute__(cls, name):
         try:
