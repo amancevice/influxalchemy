@@ -1,10 +1,20 @@
 """ InfluxAlchemy Measurements. """
-
+from unittest import mock
 from datetime import datetime
+
 from influxalchemy.measurement import Measurement
 from influxalchemy.meta import Tag
 from influxalchemy.meta import TagExp
-from influxalchemy.operations import *
+from influxalchemy.operations import EQ
+from influxalchemy.operations import NE
+from influxalchemy.operations import GT
+from influxalchemy.operations import LT
+from influxalchemy.operations import GE
+from influxalchemy.operations import LE
+from influxalchemy.operations import LK
+from influxalchemy.operations import NK
+from influxalchemy.operations import AND
+from influxalchemy.operations import OR
 
 
 def test_meta_getattr():

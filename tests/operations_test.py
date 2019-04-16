@@ -1,5 +1,4 @@
 """ InfluxAlchemy Operations. """
-
 from influxalchemy.operations import Operation
 
 

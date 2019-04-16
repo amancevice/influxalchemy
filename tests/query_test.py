@@ -1,13 +1,12 @@
 """ InfluxAlchemy Query Tests. """
 import sys
-from datetime import date, datetime, timedelta
-try:
-    from datetime import timezone
-except ImportError:
-    from pytz import timezone
+from unittest import mock
+from datetime import date
+from datetime import datetime
+from datetime import timedelta
+from datetime import timezone
 
 import influxdb
-import mock
 from influxalchemy.client import InfluxAlchemy
 from influxalchemy.measurement import Measurement
 

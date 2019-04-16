@@ -1,6 +1,6 @@
 """ InfluxAlchemy client tests. """
+from unittest import mock
 
-import mock
 import influxdb
 from influxalchemy.client import InfluxAlchemy
 from influxalchemy.measurement import Measurement
