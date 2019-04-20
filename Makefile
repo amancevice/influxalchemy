@@ -1,4 +1,4 @@
-.PHONY: lock
+.PHONY: lock clean
 
 Pipfile.lock: Pipfile
 	pipenv lock
@@ -6,3 +6,6 @@ Pipfile.lock: Pipfile
 	pipenv lock -r -d > requirements-dev.txt
 
 lock: Pipfile.lock
+
+clean:
+	touch Pipfile
