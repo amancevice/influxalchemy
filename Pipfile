@@ -3,12 +3,6 @@ url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-[packages]
-influxdb = ">= 5.0"
-pytz = ">= 2018.3"
-requests = ">= 2.20"
-six = ">= 1.11"
-
 [dev-packages]
 ipdb = "*"
 ipython = "*"
@@ -18,4 +12,8 @@ pylint = "*"
 pytest = "*"
 pytest-cov = "*"
 
-[requires]
+[packages]
+influxdb = ">= 5.0"
+pytz = ">= 2018.3"
+requests = ">= 2.20"
+six = ">= 1.11"
