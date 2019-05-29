@@ -1,5 +1,4 @@
 """ InfluxAlchemy Measurements. """
-from unittest import mock
 from datetime import datetime
 
 from influxalchemy.measurement import Measurement
@@ -13,8 +12,6 @@ from influxalchemy.operations import GE
 from influxalchemy.operations import LE
 from influxalchemy.operations import LK
 from influxalchemy.operations import NK
-from influxalchemy.operations import AND
-from influxalchemy.operations import OR
 
 
 def test_meta_getattr():

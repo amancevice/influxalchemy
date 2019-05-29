@@ -3,7 +3,7 @@ services:
   influxdb:
     image: influxdb
     ports:
-      - 8086:8086
+      - 8086
     volumes:
       - influxdb:/var/lib/influxdb
   seed:
@@ -13,4 +13,3 @@ services:
     image: influxdb
 volumes:
   influxdb:
-    external: false

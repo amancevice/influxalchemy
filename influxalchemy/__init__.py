@@ -1,8 +1,8 @@
 """ InfluxDB Alchemy. """
 import pkg_resources
 
-from .client import InfluxAlchemy
-from .measurement import Measurement
+from influxalchemy.client import InfluxAlchemy     # noqa: F401
+from influxalchemy.measurement import Measurement  # noqa: F401
 
 
 try:

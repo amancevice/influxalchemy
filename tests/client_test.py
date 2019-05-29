@@ -4,7 +4,6 @@ from unittest import mock
 import influxdb
 from influxalchemy.client import InfluxAlchemy
 from influxalchemy.measurement import Measurement
-from influxalchemy.query import InfluxDBQuery
 
 
 @mock.patch("influxdb.InfluxDBClient")
@@ -23,7 +22,7 @@ def test_measurements(mock_flux):
     mock_flux.return_value = mock_res
     db = influxdb.InfluxDBClient(database="fizz")
     client = InfluxAlchemy(db)
-    measurements = list(client.measurements())
+    list(client.measurements())
     mock_flux.assert_called_once_with("SHOW MEASUREMENTS;")
 
 
@@ -47,4 +46,5 @@ def test_fields(mock_flux):
     mock_flux.return_value = mock_res
     db = influxdb.InfluxDBClient(database="fizz")
     client = InfluxAlchemy(db)
-    assert client.fields(Measurement.new("environment")) == ["humidity", "temperature"]
+    exp = ["humidity", "temperature"]
+    assert client.fields(Measurement.new("environment")) == exp

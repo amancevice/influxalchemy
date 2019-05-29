@@ -1,20 +1,18 @@
 language: python
 python:
-- '3.5'
-- '3.6'
-- 3.7-dev
-install:
-- pip install -r requirements.txt -r requirements-dev.txt
+- "3.5"
+- "3.6"
+- "3.7-dev"
 script:
-- pylint influxalchemy --disable useless-object-inheritance,bad-mcs-classmethod-argument
-- py.test
+- make
 after_success:
+- pip install codecov
 - codecov
 deploy:
 - provider: pypi
   user: amancevice
   password:
-    secure: >
+    secure: >-
       KcT5EOQSnhmfs49RSA7Lfa+2O4IsZcuYyMQBVUDxz2eQIXHKP6WWTmAjVwFYhnlnBUoTRINie
       AhCElQraTdm55AAy9z4GwN+aXBLvnvnVZseLwCz6p25snYR9W47RykaLmvgbBvy20pvKBAWGv
       T/9KfD2L4tL5vQrVluuLbwBwCqK89KAPBc9wmaAeIQfAWb7ZlOAb3ts+k9FfUfpqjxUo5b1wW
@@ -26,7 +24,5 @@ deploy:
       fUji+N3+CJ38B8budcltXql6yjld4v6yLDEMu7fVwEsjI+vDo0+VAkX9jEU7oYxgCgkwySjUX
       PWwdcwXikqX/PAI/rjWVlMbb/I=
   on:
-    distributions: sdist bdist_wheel
-    python: '3.6'
     repo: amancevice/influxalchemy
     tags: true

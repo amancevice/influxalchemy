@@ -1,0 +1,8 @@
+*
+!influxalchemy/
+!tests/
+!Pipfile*
+!README*
+!pytest.ini
+!setup.py
+**/*.pyc
