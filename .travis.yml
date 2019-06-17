@@ -3,10 +3,14 @@ python:
 - "3.5"
 - "3.6"
 - "3.7-dev"
+before_install:
+- pip install codecov pipenv
+install:
+- pipenv install --dev
 script:
-- make
+- pipenv run flake8
+- pipenv run py.test
 after_success:
-- pip install codecov
 - codecov
 deploy:
 - provider: pypi
