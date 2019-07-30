@@ -1,8 +1,9 @@
 # InfluxAlchemy
 
-[![build](https://travis-ci.com/amancevice/influxalchemy.svg?branch=master)](https://travis-ci.com/amancevice/influxalchemy)
-[![codecov](https://codecov.io/gh/amancevice/influxalchemy/branch/master/graph/badge.svg)](https://codecov.io/gh/amancevice/influxalchemy)
-[![pypi](https://badge.fury.io/py/influxalchemy.svg)](https://badge.fury.io/py/influxalchemy)
+[![Build Version](https://travis-ci.com/amancevice/influxalchemy.svg?branch=master)](https://travis-ci.com/amancevice/influxalchemy)
+[![PyPI Version](https://badge.fury.io/py/influxalchemy.svg)](https://badge.fury.io/py/influxalchemy)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/fd0e15a31b2ed8a0ccca/test_coverage)](https://codeclimate.com/github/amancevice/influxalchemy/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/fd0e15a31b2ed8a0ccca/maintainability)](https://codeclimate.com/github/amancevice/influxalchemy/maintainability)
 
 Query InfluxDB using SQLAlchemy-style syntax
 
