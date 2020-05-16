@@ -7,6 +7,19 @@ with open('README.md', 'r') as readme:
 setup(
     author='amancevice',
     author_email='smallweirdnum@gmail.com',
+    classifiers=[
+        'Development Status :: 5 - Production/Stable',
+        'Intended Audience :: Developers',
+        'License :: OSI Approved :: MIT License',
+        'Operating System :: OS Independent',
+        'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.8',
+        'Topic :: Database',
+        'Topic :: Utilities',
+    ],
     description='Interact with InfluxDB using SQLAlchemy-style syntax',
     install_requires=[
         'influxdb >= 5.0',

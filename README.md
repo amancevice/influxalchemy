@@ -1,9 +1,10 @@
 # InfluxAlchemy
 
-[![pytest](https://github.com/amancevice/influxalchemy/workflows/pytest/badge.svg)](https://github.com/amancevice/influxalchemy/actions)
-[![PyPI Version](https://badge.fury.io/py/influxalchemy.svg)](https://badge.fury.io/py/influxalchemy)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/fd0e15a31b2ed8a0ccca/test_coverage)](https://codeclimate.com/github/amancevice/influxalchemy/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/fd0e15a31b2ed8a0ccca/maintainability)](https://codeclimate.com/github/amancevice/influxalchemy/maintainability)
+![pypi](https://img.shields.io/pypi/v/influxalchemy?color=yellow&logo=python&logoColor=eee&style=flat-square)
+![python](https://img.shields.io/pypi/pyversions/influxalchemy?logo=python&logoColor=eee&style=flat-square)
+[![pytest](https://img.shields.io/github/workflow/status/amancevice/influxalchemy/pytest?logo=github&style=flat-square)](https://github.com/amancevice/influxalchemy/actions)
+[![coverage](https://img.shields.io/codeclimate/coverage/amancevice/influxalchemy?logo=code-climate&style=flat-square)](https://codeclimate.com/github/amancevice/influxalchemy/test_coverage)
+[![maintainability](https://img.shields.io/codeclimate/maintainability/amancevice/influxalchemy?logo=code-climate&style=flat-square)](https://codeclimate.com/github/amancevice/influxalchemy/maintainability)
 
 Query InfluxDB using SQLAlchemy-style syntax
 
