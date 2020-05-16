@@ -10,6 +10,7 @@ ipython = "*"
 pandas = "*"
 pytest = "*"
 pytest-cov = "*"
+twine = "*"
 
 [packages]
 influxdb = ">= 5.0"

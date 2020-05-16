@@ -1,6 +1,6 @@
 # InfluxAlchemy
 
-[![Build Version](https://travis-ci.com/amancevice/influxalchemy.svg?branch=master)](https://travis-ci.com/amancevice/influxalchemy)
+[![pytest](https://github.com/amancevice/influxalchemy/workflows/pytest/badge.svg)](https://github.com/amancevice/influxalchemy/actions)
 [![PyPI Version](https://badge.fury.io/py/influxalchemy.svg)](https://badge.fury.io/py/influxalchemy)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/fd0e15a31b2ed8a0ccca/test_coverage)](https://codeclimate.com/github/amancevice/influxalchemy/test_coverage)
 [![Maintainability](https://api.codeclimate.com/v1/badges/fd0e15a31b2ed8a0ccca/maintainability)](https://codeclimate.com/github/amancevice/influxalchemy/maintainability)
