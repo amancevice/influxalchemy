@@ -1,13 +1,9 @@
 name: pytest
-
 on:
   pull_request:
   push:
-    branches:
-      - master
   schedule:
     - cron: "11 21 * * *"
-
 jobs:
   pytest:
     runs-on: ubuntu-latest
@@ -18,29 +14,16 @@ jobs:
           - 3.6
           - 3.7
           - 3.8
-
     steps:
-
       - uses: actions/checkout@v1
-
       - uses: actions/setup-python@v1
         with:
           python-version: ${{ matrix.python }}
-
-      - name: Setup code climate
-        uses: amancevice/code-climate-action@v0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - uses: amancevice/setup-code-climate@v0
         with:
-          command: before-build
-
+          cc_test_reporter_id: ${{ secrets.CC_TEST_REPORTER_ID }}
+      - run: cc-test-reporter before-build
       - run: pip install . flake8 pytest pytest-cov
       - run: flake8
       - run: pytest
-
-      - name: Send coverage
-        uses: amancevice/code-climate-action@v0
-        env:
-          CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
-        with:
-          command: after-build
+      - run: cc-test-reporter after-build
