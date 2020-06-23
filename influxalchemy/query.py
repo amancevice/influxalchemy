@@ -88,7 +88,7 @@ class InfluxDBQuery(object):
         return InfluxDBQuery(
             self._entities, self._client, self._expressions, self._groupby,
             self._limit, orderby_desc=orderby_desc)
-  
+
     @property
     def measurement(self):
         """ Query measurement. """
