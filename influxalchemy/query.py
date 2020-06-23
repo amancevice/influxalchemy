@@ -12,15 +12,19 @@ class InfluxDBQuery(object):
         expressions (tuple):          Query filters
         groupby     (str):            GROUP BY string
         limit       (int):            LIMIT int
+        orderby_asc (str):            ORDER BY string ASC (ascending order)
+        orderby_desc(str):            ORDER BY string DESC (descending order)
     """
     def __init__(self, entities, client, expressions=None, groupby=None,
-                 limit=None):
+                 limit=None, orderby_asc=None, orderby_desc=None):
         # pylint: disable=too-many-arguments
         self._entities = entities
         self._client = client
         self._expressions = expressions or ()
         self._groupby = groupby
         self._limit = limit
+        self._orderby_asc = orderby_asc
+        self._orderby_desc = orderby_desc
 
     def __str__(self):
         select = ", ".join(self._select)
@@ -34,6 +38,10 @@ class InfluxDBQuery(object):
             iql += " GROUP BY %s" % self._groupby
         if self._limit is not None:
             iql += " LIMIT {0}".format(self._limit)
+        if self._orderby_asc is not None:
+            iql += " ORDER BY %s ASC" % self._orderby_asc
+        elif self._orderby_desc is not None:
+            iql += " ORDER BY %s DESC" % self._orderby_desc
         return "%s;" % iql
 
     def __repr__(self):
@@ -69,6 +77,18 @@ class InfluxDBQuery(object):
             self._entities, self._client, self._expressions, self._groupby,
             limit)
 
+    def order_by_asc(self, orderby_asc):
+        """ Ascending order query. """
+        return InfluxDBQuery(
+            self._entities, self._client, self._expressions, self._groupby,
+            self._limit, orderby_asc=orderby_asc)
+
+    def order_by_desc(self, orderby_desc):
+        """ Descending order query. """
+        return InfluxDBQuery(
+            self._entities, self._client, self._expressions, self._groupby,
+            self._limit, orderby_desc=orderby_desc)
+  
     @property
     def measurement(self):
         """ Query measurement. """

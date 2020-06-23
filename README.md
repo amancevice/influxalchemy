@@ -123,6 +123,17 @@ flux.query(Widgets).group_by(Widgets.tag1)
 ```
 
 
+### Order By
+
+```python
+# SELECT * FROM widgets ORDER BY time ASC;
+flux.query(Widgets).order_by_asc("time")
+
+# SELECT * FROM widgets ORDER BY time DESC;
+flux.query(Widgets).order_by_desc("time")
+```
+
+
 ### Time
 
 ```python
