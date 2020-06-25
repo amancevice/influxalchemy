@@ -1,9 +1,13 @@
-""" InfluxDB Operations. """
+"""
+InfluxDB Operations.
+"""
 
 
 # pylint: disable=too-few-public-methods
 class Operation(object):
-    """ InfluxDB query operation. """
+    """
+    InfluxDB query operation.
+    """
     def __init__(self, op, nop):
         self._op = op
         self._nop = nop

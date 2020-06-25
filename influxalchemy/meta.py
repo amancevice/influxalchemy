@@ -1,4 +1,6 @@
-""" InfluxDB Meta Measurement. """
+"""
+InfluxDB Meta Measurement.
+"""
 from datetime import date
 
 from . import operations
@@ -12,7 +14,9 @@ except ImportError:     # pragma: no cover
 
 
 def make_tz_aware(datetime_obj):
-    """ Make a date/datetime object to be timezone-aware """
+    """
+    Make a date/datetime object to be timezone-aware.
+    """
     # 'date' object doesn't need to be timezone aware
     # pylint: disable=unidiomatic-typecheck
     if type(datetime_obj) is date:
@@ -25,7 +29,9 @@ def make_tz_aware(datetime_obj):
 
 
 class MetaMeasurement(type):
-    """ Meta class of Measurement. """
+    """
+    Meta class of Measurement.
+    """
     def __new__(cls, name, bases, dict_):
         dict_.setdefault("__measurement__", name)
         return super(MetaMeasurement, cls).__new__(cls, name, bases, dict_)
@@ -59,15 +65,18 @@ class MetaMeasurement(type):
 
     @property
     def measurement(cls):
-        """ Reflexive reference to measurement. """
+        """
+        Reflexive reference to measurement.
+        """
         return cls
 
 
 class Tag(object):
-    """ InfluxDB Tag instance.
+    """
+    InfluxDB Tag instance.
 
-        name        (str):          Name of Tag
-        measurement (Measurement):  Measurement of tag
+    name        (str):          Name of Tag
+    measurement (Measurement):  Measurement of tag
     """
     def __init__(self, name, measurement):
         self._name = name
@@ -98,27 +107,34 @@ class Tag(object):
         return TagExp.less_equal(self, other)
 
     def like(self, other):
-        """ self =~ other """
+        """
+        self =~ other
+        """
         return TagExp.like(self, other)
 
     def notlike(self, other):
-        """ self !~ other """
+        """
+        self !~ other
+        """
         return TagExp.notlike(self, other)
 
 
 class Time(Tag):
-    """ Time of InfluxDB Measurement. """
+    """
+    Time of InfluxDB Measurement.
+    """
     def between(self, start, end, startinc=True, endinc=True):
-        """ Query times between extremes.
+        """
+        Query times between extremes.
 
-            Arguments:
-                start    (str):      Start of time
-                end      (str):      End of time
-                startinc (boolean):  Start-inclusive flag
-                endinc   (boolean):  End-inclusive flag
+        Arguments:
+            start    (str):      Start of time
+            end      (str):      End of time
+            startinc (boolean):  Start-inclusive flag
+            endinc   (boolean):  End-inclusive flag
 
-            Returns:
-                Time expression.
+        Returns:
+            Time expression.
         """
         if startinc is True:
             startexp = TagExp.greater_equal(self, start)
@@ -132,7 +148,9 @@ class Time(Tag):
 
 
 class TagExp(object):
-    """ A tag query expression. """
+    """
+    A tag query expression.
+    """
     def __init__(self, left, op, right):
         self._left = left
         self._op = op
@@ -170,40 +188,56 @@ class TagExp(object):
 
     @classmethod
     def equals(cls, self, other):
-        """ left = right """
+        """
+        left = right
+        """
         return cls(self, operations.EQ, other)
 
     @classmethod
     def notequals(cls, self, other):
-        """ left != right """
+        """
+        left != right
+        """
         return cls(self, operations.NE, other)
 
     @classmethod
     def greater_than(cls, self, other):
-        """ left > right """
+        """
+        left > right
+        """
         return cls(self, operations.GT, other)
 
     @classmethod
     def less_than(cls, self, other):
-        """ left < right """
+        """
+        left < right
+        """
         return cls(self, operations.LT, other)
 
     @classmethod
     def greater_equal(cls, self, other):
-        """ left >= right """
+        """
+        left >= right
+        """
         return cls(self, operations.GE, other)
 
     @classmethod
     def less_equal(cls, self, other):
-        """ left <= right """
+        """
+        left <= right
+        """
         return cls(self, operations.LE, other)
 
     @classmethod
     def like(cls, self, other):
-        """ left =~ right """
+        """
+        left =~ right
+        """
         return cls(self, operations.LK, other)
 
     @classmethod
     def notlike(cls, self, other):
-        """ left !~ right """
+        """
+        left !~ right
+        """
         return cls(self, operations.NK, other)
