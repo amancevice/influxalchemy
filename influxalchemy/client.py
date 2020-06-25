@@ -1,8 +1,8 @@
 """
 InfluxAlchemy Client.
 """
-from . import query
-from .measurement import Measurement
+from influxalchemy import query
+from influxalchemy.measurement import Measurement
 
 
 class InfluxAlchemy:

@@ -3,7 +3,7 @@ InfluxDB Query Object.
 """
 import functools
 
-from . import meta
+from influxalchemy import meta
 
 
 class InfluxDBQuery:

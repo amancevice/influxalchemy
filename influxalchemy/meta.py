@@ -3,7 +3,7 @@ InfluxDB Meta Measurement.
 """
 from datetime import date
 
-from . import operations
+from influxalchemy import operations
 
 try:
     from datetime import timezone
