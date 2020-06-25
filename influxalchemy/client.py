@@ -5,7 +5,7 @@ from . import query
 from .measurement import Measurement
 
 
-class InfluxAlchemy(object):
+class InfluxAlchemy:
     """
     InfluxAlchemy database session.
 

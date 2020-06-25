@@ -6,7 +6,7 @@ import functools
 from . import meta
 
 
-class InfluxDBQuery(object):
+class InfluxDBQuery:
     """
     InfluxDB Query object.
 

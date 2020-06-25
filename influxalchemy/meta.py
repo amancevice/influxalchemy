@@ -71,7 +71,7 @@ class MetaMeasurement(type):
         return cls
 
 
-class Tag(object):
+class Tag:
     """
     InfluxDB Tag instance.
 
@@ -147,7 +147,7 @@ class Time(Tag):
         return startexp & endexp
 
 
-class TagExp(object):
+class TagExp:
     """
     A tag query expression.
     """

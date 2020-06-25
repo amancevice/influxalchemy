@@ -3,8 +3,7 @@ InfluxDB Operations.
 """
 
 
-# pylint: disable=too-few-public-methods
-class Operation(object):
+class Operation:
     """
     InfluxDB query operation.
     """
