@@ -127,10 +127,14 @@ flux.query(Widgets).group_by(Widgets.tag1)
 
 ```python
 # SELECT * FROM widgets ORDER BY time ASC;
-flux.query(Widgets).order_by_asc("time")
+flux.query(Widgets).order_by("time")
 
 # SELECT * FROM widgets ORDER BY time DESC;
-flux.query(Widgets).order_by_desc("time")
+flux.query(Widgets).order_by("-time")
+
+# Multiple column ordering
+# SELECT * FROM widgets ORDER BY name ASC, time DESC;
+flux.query(Widgets).order_by("name", "-time")
 ```
 
 

@@ -99,21 +99,12 @@ def test_filter_by(mock_qry):
 
 
 @mock.patch("influxdb.InfluxDBClient.query")
-def test_order_by_asc(mock_qry):
+def test_order_by(mock_qry):
     mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
     db = influxdb.InfluxDBClient(database="example")
     client = InfluxAlchemy(db)
-    query = client.query(Measurement.new("fizz")).order_by_asc("buzz")
-    assert str(query) == "SELECT * FROM fizz ORDER BY buzz ASC;"
-
-
-@mock.patch("influxdb.InfluxDBClient.query")
-def test_order_by_desc(mock_qry):
-    mock_qry.side_effect = influxdb.exceptions.InfluxDBClientError(None)
-    db = influxdb.InfluxDBClient(database="example")
-    client = InfluxAlchemy(db)
-    query = client.query(Measurement.new("fizz")).order_by_desc("buzz")
-    assert str(query) == "SELECT * FROM fizz ORDER BY buzz DESC;"
+    query = client.query(Measurement.new("fizz")).order_by("buzz", "-goo")
+    assert str(query) == "SELECT * FROM fizz ORDER BY buzz ASC goo DESC;"
 
 
 def test_tags():
