@@ -1,14 +1,20 @@
 SDIST := dist/$(shell python setup.py --fullname).tar.gz
 
-.PHONY: default clean upload
+.PHONY: all clean test upload
 
-default: $(SDIST)
+all: $(SDIST)
 
 clean:
 	rm -rf dist
 
+test: coverage.xml
+
 upload: $(SDIST)
 	twine upload $<
 
-$(SDIST):
+$(SDIST): coverage.xml
 	python setup.py sdist
+
+coverage.xml: $(shell find influxalchemy tests -name '*.py')
+	flake8 $^
+	pytest || (rm $@ ; exit 1)
