@@ -1,20 +1,19 @@
-SDIST := dist/$(shell python setup.py --fullname).tar.gz
-
-.PHONY: all clean test upload
+PYFILES := $(shell find influxalchemy tests -name '*.py')
+SDIST   := dist/$(shell python setup.py --fullname).tar.gz
 
 all: $(SDIST)
 
 clean:
 	rm -rf dist
 
-test: coverage.xml
-
 upload: $(SDIST)
 	twine upload $<
 
-$(SDIST): coverage.xml
+.PHONY: all clean upload
+
+$(SDIST): $(PYFILES) Pipfile.lock
+	pipenv run pytest
 	python setup.py sdist
 
-coverage.xml: $(shell find influxalchemy tests -name '*.py')
-	flake8 $^
-	pytest || (rm $@ ; exit 1)
+Pipfile.lock: Pipfile
+	pipenv install --dev
