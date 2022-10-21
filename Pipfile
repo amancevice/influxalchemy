@@ -4,12 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
+flake8 = "< 5"
 ipdb = "*"
 ipython = "*"
 pandas = "*"
 pytest = "*"
 pytest-cov = "*"
-pytest-flake8 = "*"
+pytest-flake8-v2 = "*"
 twine = "*"
 
 [packages]
