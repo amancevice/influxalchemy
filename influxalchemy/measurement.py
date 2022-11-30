@@ -11,6 +11,7 @@ class Measurement(six.with_metaclass(meta.MetaMeasurement)):
     """
     InfluxDB Measurement.
     """
+
     # pylint: disable=no-init
     @classmethod
     def new(cls, name):

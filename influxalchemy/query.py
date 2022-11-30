@@ -16,8 +16,8 @@ class InfluxDBQuery:
     groupby     (str):            GROUP BY string
     limit       (int):            LIMIT int
     """
-    def __init__(self, entities, client, expressions=None, groupby=None,
-                 limit=None):
+
+    def __init__(self, entities, client, expressions=None, groupby=None, limit=None):
         # pylint: disable=too-many-arguments
         self._entities = entities
         self._client = client
@@ -53,8 +53,7 @@ class InfluxDBQuery:
         Filter query.
         """
         expressions = self._expressions + expressions
-        return InfluxDBQuery(self._entities, self._client,
-                             expressions=expressions)
+        return InfluxDBQuery(self._entities, self._client, expressions=expressions)
 
     def filter_by(self, **kwargs):
         """
@@ -63,15 +62,13 @@ class InfluxDBQuery:
         expressions = self._expressions
         for key, val in sorted(kwargs.items()):
             expressions += (meta.TagExp.equals(key, val),)
-        return InfluxDBQuery(self._entities, self._client,
-                             expressions=expressions)
+        return InfluxDBQuery(self._entities, self._client, expressions=expressions)
 
     def group_by(self, groupby):
         """
         Group query.
         """
-        return InfluxDBQuery(
-            self._entities, self._client, self._expressions, groupby)
+        return InfluxDBQuery(self._entities, self._client, self._expressions, groupby)
 
     def limit(self, limit):
         """
@@ -79,8 +76,8 @@ class InfluxDBQuery:
         """
         assert isinstance(limit, int)
         return InfluxDBQuery(
-            self._entities, self._client, self._expressions, self._groupby,
-            limit)
+            self._entities, self._client, self._expressions, self._groupby, limit
+        )
 
     @property
     def measurement(self):

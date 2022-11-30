@@ -3,7 +3,7 @@ InfluxDB Alchemy.
 """
 import pkg_resources
 
-from influxalchemy.client import InfluxAlchemy     # noqa: F401
+from influxalchemy.client import InfluxAlchemy  # noqa: F401
 from influxalchemy.measurement import Measurement  # noqa: F401
 
 

@@ -126,26 +126,24 @@ def test_tag_notlike():
 def test_time_between():
     meas = Measurement.new("fizz")
     exp = meas.time.between("'2016-01-01'", "now() - 7d")
-    assert exp == \
-        TagExp(meas.time, " >= ", "'2016-01-01'") & \
-        TagExp(meas.time, " <= ", "now() - 7d")
+    assert exp == TagExp(meas.time, " >= ", "'2016-01-01'") & TagExp(
+        meas.time, " <= ", "now() - 7d"
+    )
 
 
 def test_time_between_excl():
     meas = Measurement.new("fizz")
     exp = meas.time.between("'2016-01-01'", "now() - 7d", False, False)
-    assert exp == \
-        TagExp(meas.time, " > ", "'2016-01-01'") & \
-        TagExp(meas.time, " < ", "now() - 7d")
+    assert exp == TagExp(meas.time, " > ", "'2016-01-01'") & TagExp(
+        meas.time, " < ", "now() - 7d"
+    )
 
 
 def test_time_between_dt():
     meas = Measurement.new("fizz")
     d = datetime(2016, 1, 1)
     exp = meas.time.between(d, "now() - 7d")
-    assert exp == \
-        TagExp(meas.time, " >= ", d) & \
-        TagExp(meas.time, " <= ", "now() - 7d")
+    assert exp == TagExp(meas.time, " >= ", d) & TagExp(meas.time, " <= ", "now() - 7d")
 
 
 def test_exp_init():
@@ -179,16 +177,14 @@ def test_exp_and():
     meas = Measurement.new("fizz")
     exp0 = TagExp(meas.buzz, " = ", "goo")
     exp1 = TagExp(meas.guzz, " = ", "zoo")
-    assert (exp0 & exp1) == \
-        TagExp("buzz = 'goo'", " AND ", "guzz = 'zoo'")
+    assert (exp0 & exp1) == TagExp("buzz = 'goo'", " AND ", "guzz = 'zoo'")
 
 
 def test_exp_or():
     meas = Measurement.new("fizz")
     exp0 = TagExp(meas.buzz, " = ", "goo")
     exp1 = TagExp(meas.guzz, " = ", "zoo")
-    assert (exp0 | exp1) == \
-        TagExp("buzz = 'goo'", " OR ", "guzz = 'zoo'")
+    assert (exp0 | exp1) == TagExp("buzz = 'goo'", " OR ", "guzz = 'zoo'")
 
 
 def test_exp_inv():

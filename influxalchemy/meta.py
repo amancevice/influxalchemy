@@ -7,10 +7,12 @@ from influxalchemy import operations
 
 try:
     from datetime import timezone
+
     UTC = timezone.utc  # pragma: no cover
-except ImportError:     # pragma: no cover
-    import pytz         # pragma: no cover
-    UTC = pytz.utc      # pragma: no cover
+except ImportError:  # pragma: no cover
+    import pytz  # pragma: no cover
+
+    UTC = pytz.utc  # pragma: no cover
 
 
 def make_tz_aware(datetime_obj):
@@ -32,6 +34,7 @@ class MetaMeasurement(type):
     """
     Meta class of Measurement.
     """
+
     def __new__(cls, name, bases, dict_):
         dict_.setdefault("__measurement__", name)
         return super(MetaMeasurement, cls).__new__(cls, name, bases, dict_)
@@ -78,6 +81,7 @@ class Tag:
     name        (str):          Name of Tag
     measurement (Measurement):  Measurement of tag
     """
+
     def __init__(self, name, measurement):
         self._name = name
         self.measurement = measurement
@@ -123,6 +127,7 @@ class Time(Tag):
     """
     Time of InfluxDB Measurement.
     """
+
     def between(self, start, end, startinc=True, endinc=True):
         """
         Query times between extremes.
@@ -151,6 +156,7 @@ class TagExp:
     """
     A tag query expression.
     """
+
     def __init__(self, left, op, right):
         self._left = left
         self._op = op
