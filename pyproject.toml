@@ -1,3 +1,40 @@
+[build-system]
+requires = ["flit_core >=3.2,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+authors = [{name = "Alexander Mancevice", email = "alexander.mancevice@hey.com"}]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Intended Audience :: System Administrators",
+  "License :: OSI Approved :: MIT License",
+  "License :: OSI Approved :: MIT License",
+  "Operating System :: OS Independent",
+  "Operating System :: OS Independent",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.7",
+  "Programming Language :: Python :: 3.8",
+  "Programming Language :: Python :: 3.9",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Topic :: Utilities",
+]
+dependencies = [
+  "influxdb >= 5.0",
+  "pytz >= 2018.3",
+  "requests >= 2.20",
+  "six >= 1.11",
+]
+dynamic = ["version", "description"]
+license = {file = "LICENSE"}
+name = "influxalchemy"
+requires-python = ">= 3.7"
+readme = "README.md"
+
+[project.urls]
+Home = "https://github.com/amancevice/knackhq"
+
 [tool.pytest.ini_options]
 minversion = "6.0"
-addopts    = "--flake8 --verbose --cov influxalchemy --cov tests --cov-report term-missing --cov-report xml"
+addopts    = "--cov influxalchemy --cov tests --cov-report term-missing --cov-report xml"

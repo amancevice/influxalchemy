@@ -4,14 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-flake8 = "< 5"
+black = "*"
+flit = "*"
 ipdb = "*"
 ipython = "*"
 pandas = "*"
 pytest = "*"
 pytest-cov = "*"
-pytest-flake8-v2 = "*"
-twine = "*"
 
 [packages]
 influxdb = ">= 5.0"

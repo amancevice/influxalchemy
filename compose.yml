@@ -1,13 +1,10 @@
-version: '3'
 services:
-
   influxdb:
     image: influxdb
     ports:
       - 8086
     volumes:
       - influxdb:/var/lib/influxdb
-
   seed:
     image: influxdb
     command: |
@@ -15,6 +12,5 @@ services:
       influx -import -host influxdb -path=NOAA_data.txt -precision=s
     depends_on:
       - influxdb
-
 volumes:
   influxdb:

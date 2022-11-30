@@ -8,13 +8,13 @@ jobs:
     strategy:
       matrix:
         python:
-          - "3.5"
-          - "3.6"
           - "3.7"
           - "3.8"
           - "3.9"
+          - "3.10"
+          - "3.11"
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python }}
@@ -23,8 +23,6 @@ jobs:
           cc_test_reporter_id: ${{ secrets.CC_TEST_REPORTER_ID }}
       - run: cc-test-reporter before-build
       - run: pip install pipenv
-      - run: pipenv requirements --dev > requirements.txt
-      - run: pip install . -r requirements.txt
-      - run: pytest
+      - run: make
       - run: cc-test-reporter after-build
         if: ${{ github.event_name != 'pull_request' }}
