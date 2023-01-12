@@ -2,12 +2,11 @@
 
 ![pypi](https://img.shields.io/pypi/v/influxalchemy?color=yellow&logo=python&logoColor=eee&style=flat-square)
 ![python](https://img.shields.io/pypi/pyversions/influxalchemy?logo=python&logoColor=eee&style=flat-square)
-[![pytest](https://img.shields.io/github/workflow/status/amancevice/influxalchemy/pytest?logo=github&style=flat-square)](https://github.com/amancevice/influxalchemy/actions)
+[![pytest](https://img.shields.io/github/actions/workflow/status/amancevice/influxalchemy/pytest.yml?logo=github&style=flat-square)](https://github.com/amancevice/influxalchemy/actions/workflows/pytest.yml)
 [![coverage](https://img.shields.io/codeclimate/coverage/amancevice/influxalchemy?logo=code-climate&style=flat-square)](https://codeclimate.com/github/amancevice/influxalchemy/test_coverage)
 [![maintainability](https://img.shields.io/codeclimate/maintainability/amancevice/influxalchemy?logo=code-climate&style=flat-square)](https://codeclimate.com/github/amancevice/influxalchemy/maintainability)
 
 Query InfluxDB using SQLAlchemy-style syntax
-
 
 ## Installation
 
@@ -15,14 +14,12 @@ Query InfluxDB using SQLAlchemy-style syntax
 pip install influxalchemy
 ```
 
-
 ## Usage
 
 ```python
 import influxdb
 import influxalchemy
 ```
-
 
 ### Define InfluxAlchemy Measurements
 
@@ -37,18 +34,14 @@ class Wombats(influxalchemy.Measurement):
 
 The class-attribute `__measurement__` can be omitted and will default to the class name if absent.
 
-
 ### Open InfluxAlchemy Connection
-
 
 ```python
 db = influxdb.DataFrameClient(database="example")
 flux = influxalchemy.InfluxAlchemy(db)
 ```
 
-
 ## Query InfluxDB
-
 
 ### Query Single Measurement
 
@@ -57,14 +50,12 @@ flux = influxalchemy.InfluxAlchemy(db)
 flux.query(Widgets)
 ```
 
-
 ### Query Ad Hoc Measurement
 
 ```python
 # SELECT * from /.*/;
 flux.query(influxalchemy.Measurement.new("/.*/"))
 ```
-
 
 ### Select Fields of Measurement
 
@@ -73,14 +64,12 @@ flux.query(influxalchemy.Measurement.new("/.*/"))
 flux.query(Widgets.tag1, Widgets.field2)
 ```
 
-
 ### Query Across Measurements
 
 ```python
 # SELECT * FROM /widgets|wombats/;
 flux.query(Widgets | Wombats)
 ```
-
 
 ### Filter Tags
 
@@ -89,14 +78,12 @@ flux.query(Widgets | Wombats)
 flux.query(Widgets).filter(Widgets.tag1 == "fizz")
 ```
 
-
 ### Filter Tags with 'like'
 
 ```python
 # SELECT * FROM widgets WHERE tag1 =~ /z$/;
 flux.query(Widgets).filter(Widgets.tag1.like("/z$/"))
 ```
-
 
 ### Chain Filters
 
@@ -111,7 +98,6 @@ flux.query(Widgets).filter(clause1 & clause2)
 flux.query(Widgets).filter(clause1 | clause2)
 ```
 
-
 ### Group By
 
 ```python
@@ -121,7 +107,6 @@ flux.query(Widgets).group_by("time(1d)")
 # SELECT * FROM widgets GROUP BY tag1;
 flux.query(Widgets).group_by(Widgets.tag1)
 ```
-
 
 ### Time
 
