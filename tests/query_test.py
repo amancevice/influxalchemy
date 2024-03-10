@@ -1,4 +1,5 @@
 """ InfluxAlchemy Query Tests. """
+
 import sys
 from unittest import mock
 from datetime import date

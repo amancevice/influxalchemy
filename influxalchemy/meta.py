@@ -1,6 +1,7 @@
 """
 InfluxDB Meta Measurement.
 """
+
 from datetime import date
 
 from influxalchemy import operations

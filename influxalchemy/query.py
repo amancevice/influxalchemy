@@ -1,6 +1,7 @@
 """
 InfluxDB Query Object.
 """
+
 import functools
 
 from influxalchemy import meta

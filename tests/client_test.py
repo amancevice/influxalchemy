@@ -1,4 +1,5 @@
 """ InfluxAlchemy client tests. """
+
 from unittest import mock
 
 import influxdb

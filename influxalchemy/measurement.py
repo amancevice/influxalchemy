@@ -1,6 +1,7 @@
 """
 InfluxDB Measurement.
 """
+
 import six
 
 from influxalchemy import meta

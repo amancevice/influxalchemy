@@ -1,4 +1,5 @@
 """ InfluxAlchemy Measurements. """
+
 from datetime import datetime
 
 from influxalchemy.measurement import Measurement

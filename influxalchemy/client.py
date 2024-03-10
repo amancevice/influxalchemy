@@ -1,6 +1,7 @@
 """
 InfluxAlchemy Client.
 """
+
 from influxalchemy import query
 from influxalchemy.measurement import Measurement
 
