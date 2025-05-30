@@ -1,4 +1,4 @@
-""" InfluxAlchemy client tests. """
+"""InfluxAlchemy client tests."""
 
 from unittest import mock
 

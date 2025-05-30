@@ -1,4 +1,4 @@
-""" InfluxAlchemy Query Tests. """
+"""InfluxAlchemy Query Tests."""
 
 import sys
 from unittest import mock

@@ -1,4 +1,4 @@
-""" InfluxAlchemy Measurements. """
+"""InfluxAlchemy Measurements."""
 
 from datetime import datetime
 
