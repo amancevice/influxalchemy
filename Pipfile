@@ -4,13 +4,13 @@ verify_ssl = true
 name = "pypi"
 
 [dev-packages]
-black = "*"
 flit = "*"
 ipdb = "*"
 ipython = "*"
 pandas = "*"
 pytest = "*"
 pytest-cov = "*"
+ruff = "*"
 
 [packages]
 influxdb = ">= 5.0"

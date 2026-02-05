@@ -14,7 +14,7 @@ publish: test build
 	pipenv run flit publish
 
 test: .venv
-	pipenv run black --check influxalchemy tests
+	pipenv run ruff check influxalchemy tests
 	pipenv run pytest
 
 .PHONY: all build clean ipython publish test
