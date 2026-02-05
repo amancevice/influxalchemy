@@ -3,8 +3,6 @@
 ![pypi](https://img.shields.io/pypi/v/influxalchemy?color=yellow&logo=python&logoColor=eee&style=flat-square)
 ![python](https://img.shields.io/pypi/pyversions/influxalchemy?logo=python&logoColor=eee&style=flat-square)
 [![pytest](https://img.shields.io/github/actions/workflow/status/amancevice/influxalchemy/pytest.yml?logo=github&style=flat-square)](https://github.com/amancevice/influxalchemy/actions/workflows/pytest.yml)
-[![coverage](https://img.shields.io/codeclimate/coverage/amancevice/influxalchemy?logo=code-climate&style=flat-square)](https://codeclimate.com/github/amancevice/influxalchemy/test_coverage)
-[![maintainability](https://img.shields.io/codeclimate/maintainability/amancevice/influxalchemy?logo=code-climate&style=flat-square)](https://codeclimate.com/github/amancevice/influxalchemy/maintainability)
 
 Query InfluxDB using SQLAlchemy-style syntax
 
